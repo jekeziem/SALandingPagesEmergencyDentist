@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmileAgent — Emergency Dental Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
+<style>
+  :root {
+    --teal: #0D6B5E;
+    --teal-light: #E6F5F2;
+    --teal-mid: #B8DFD8;
+    --teal-dark: #094D44;
+    --warm: #F9F6F1;
+    --text: #1A1A1A;
+    --text-mid: #4A4A4A;
+    --text-light: #7A7A7A;
+    --red: #DC2626;
+    --red-light: #FEF2F2;
+    --red-mid: #FECACA;
+    --orange: #EA580C;
+    --orange-light: #FFF7ED;
+    --green: #15803D;
+    --green-light: #F0FDF4;
+    --border: #E5E5E5;
+    --white: #FFFFFF;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #059669;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-logo-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #111827;
+  }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--text-mid);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .emergency-nav {
+    background: var(--red) !important;
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    animation: pulse-red 2s infinite;
+  }
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+
+  /* HERO SECTION */
+  .emergency-hero {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .emergency-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-light);
+    border: 1px solid var(--red-mid);
+    color: var(--red);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .emergency-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-mid);
+    max-width: 560px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  /* TRIAGE FLOW */
+  .triage-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .triage-header {
+    background: linear-gradient(135deg, var(--red) 0%, #991B1B 100%);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--white);
+  }
+  .triage-header-text {
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .triage-header-sub {
+    font-size: 13px;
+    opacity: 0.8;
+  }
+  .triage-step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  .triage-body { padding: 28px; }
+
+  .triage-question {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .triage-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .triage-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+  }
+  .triage-option:hover {
+    border-color: var(--teal);
+    background: var(--teal-light);
+  }
+  .triage-option.selected {
+    border-color: var(--teal);
+    background: var(--teal-light);
+  }
+  .triage-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .selected .triage-radio {
+    border-color: var(--teal);
+    background: var(--teal);
+  }
+  .selected .triage-radio::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--white);
+  }
+  .triage-option-text {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .triage-option-sub {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .urgency-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .urgency-high { background: var(--red-light); color: var(--red); }
+  .urgency-med { background: var(--orange-light); color: var(--orange); }
+  .urgency-low { background: var(--green-light); color: var(--green); }
+
+  /* RESULTS CARDS */
+  .results-header {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .results-sub {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 24px;
+  }
+
+  .clinic-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .clinic-card:hover { border-color: var(--teal-mid); }
+
+  .clinic-rank {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .clinic-info { flex: 1; }
+  .clinic-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .clinic-address {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+  }
+  .clinic-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .clinic-tag {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+  .ct-open { background: var(--green-light); color: var(--green); }
+  .ct-emergency { background: var(--red-light); color: var(--red); }
+  .ct-anxiety { background: var(--teal-light); color: var(--teal); }
+  .ct-prsi { background: #EDE9FE; color: #6D28D9; }
+  .ct-mc { background: #DBEAFE; color: #1D4ED8; }
+
+  .clinic-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .clinic-distance {
+    font-size: 13px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .clinic-actions { display: flex; gap: 8px; }
+  .btn-sm {
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .btn-sm-primary { background: var(--teal); color: var(--white); }
+  .btn-sm-primary:hover { background: var(--teal-dark); }
+  .btn-sm-outline { background: var(--white); color: var(--teal); border: 1.5px solid var(--teal); }
+
+  .match-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--teal-light);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+  .match-number {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .match-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--teal);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* HOW IT WORKS */
+  .how-section {
+    margin-top: 48px;
+    margin-bottom: 40px;
+  }
+  .how-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .how-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .how-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  .how-icon-1 { background: var(--red-light); }
+  .how-icon-2 { background: var(--teal-light); }
+  .how-icon-3 { background: #F0FDF4; }
+  .how-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .how-card p {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .stat-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 6px;
+    line-height: 1.3;
+  }
+
+  /* FOOTER NOTE */
+  .footer-note {
+    text-align: center;
+    padding: 32px 0;
+    font-size: 13px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  .mockup-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--red);
+    color: var(--white);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    z-index: 999;
+  }
+
+  @media (max-width: 640px) {
+    .how-grid, .stats-bar { grid-template-columns: 1fr; }
+    .clinic-card { flex-direction: column; }
+    .hero-title { font-size: 28px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-badge">MOCKUP — EMERGENCY FLOW</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <i class="ph ph-tooth" style="color:white;font-size:18px;"></i>
+    </div>
+    <span class="nav-logo-text">SmileAgent</span>
+  </a>
+  <div class="nav-links">
+    <a href="#">Find a Dentist</a>
+    <a href="#" class="emergency-nav">🚨 Emergency</a>
+    <a href="#">How It Works</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="emergency-hero">
+    <div class="emergency-badge">Emergency Dental Finder — Dublin</div>
+    <h1 class="hero-title">In pain right now?<br>We'll find who can see you today.</h1>
+    <p class="hero-sub">SmileAgent matches you to the nearest available emergency dentist in Dublin. Verified clinics, real availability, transparent pricing — in under 60 seconds.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">13</div>
+      <div class="stat-label">Verified Dublin clinics</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">24hr</div>
+      <div class="stat-label">Emergency coverage</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">€0</div>
+      <div class="stat-label">Free for patients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">60s</div>
+      <div class="stat-label">Average match time</div>
+    </div>
+  </div>
+
+  <!-- TRIAGE FLOW DEMO -->
+  <div class="triage-card">
+    <div class="triage-header">
+      <div class="triage-step-icon">🦷</div>
+      <div>
+        <div class="triage-header-text">Step 1 of 3 — Tell us what's happening</div>
+        <div class="triage-header-sub">This helps us match you to the right clinic</div>
+      </div>
+    </div>
+    <div class="triage-body">
+      <div class="triage-question">What best describes your situation?</div>
+      <div class="triage-options">
+        <div class="triage-option selected">
+          <div class="triage-radio"></div>
+          <div>
+            <div class="triage-option-text">Severe pain or swelling</div>
+            <div class="triage-option-sub">Constant pain, visible swelling, can't eat or sleep</div>
+          </div>
+          <span class="urgency-tag urgency-high">Urgent</span>
+        </div>
+        <div class="triage-option">
+          <div class="triage-radio"></div>
+          <div>
+            <div class="triage-option-text">Broken or knocked-out tooth</div>
+            <div class="triage-option-sub">Chipped, cracked, or completely dislodged tooth</div>
+          </div>
+          <span class="urgency-tag urgency-high">Urgent</span>
+        </div>
+        <div class="triage-option">
+          <div class="triage-radio"></div>
+          <div>
+            <div class="triage-option-text">Moderate pain or sensitivity</div>
+            <div class="triage-option-sub">Pain when eating/drinking, comes and goes</div>
+          </div>
+          <span class="urgency-tag urgency-med">Soon</span>
+        </div>
+        <div class="triage-option">
+          <div class="triage-radio"></div>
+          <div>
+            <div class="triage-option-text">Lost filling or crown</div>
+            <div class="triage-option-sub">Filling fell out, crown came loose</div>
+          </div>
+          <span class="urgency-tag urgency-med">Soon</span>
+        </div>
+        <div class="triage-option">
+          <div class="triage-radio"></div>
+          <div>
+            <div class="triage-option-text">Something else / not sure</div>
+            <div class="triage-option-sub">Describe your situation and we'll help</div>
+          </div>
+          <span class="urgency-tag urgency-low">Flexible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCHED RESULTS -->
+  <div class="results-header">3 clinics matched for your emergency</div>
+  <div class="results-sub">Ranked by availability, proximity, and fit. All verified by SmileAgent.</div>
+
+  <div class="clinic-card">
+    <div class="clinic-rank">1</div>
+    <div class="clinic-info">
+      <div class="clinic-name">Docklands Dental Clinic</div>
+      <div class="clinic-address">Grand Canal Dock, Dublin 2</div>
+      <div class="clinic-tags">
+        <span class="clinic-tag ct-open">Open now</span>
+        <span class="clinic-tag ct-emergency">Emergency slots today</span>
+        <span class="clinic-tag ct-anxiety">Anxiety-friendly</span>
+        <span class="clinic-tag ct-prsi">PRSI</span>
+      </div>
+      <div class="clinic-bottom">
+        <span class="clinic-distance">📍 1.2km away · Emergency extraction from €150</span>
+        <div class="clinic-actions">
+          <a href="#" class="btn-sm btn-sm-outline">View Passport</a>
+          <a href="#" class="btn-sm btn-sm-primary">Call Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="match-score">
+      <div class="match-number">97</div>
+      <div class="match-label">Match</div>
+    </div>
+  </div>
+
+  <div class="clinic-card">
+    <div class="clinic-rank">2</div>
+    <div class="clinic-info">
+      <div class="clinic-name">Pearse Street Dental</div>
+      <div class="clinic-address">Pearse Street, Dublin 2</div>
+      <div class="clinic-tags">
+        <span class="clinic-tag ct-open">Open now</span>
+        <span class="clinic-tag ct-emergency">Emergency slots today</span>
+        <span class="clinic-tag ct-mc">Medical Card</span>
+        <span class="clinic-tag ct-prsi">PRSI</span>
+      </div>
+      <div class="clinic-bottom">
+        <span class="clinic-distance">📍 1.8km away · Emergency extraction from €130</span>
+        <div class="clinic-actions">
+          <a href="#" class="btn-sm btn-sm-outline">View Passport</a>
+          <a href="#" class="btn-sm btn-sm-primary">Call Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="match-score">
+      <div class="match-number">91</div>
+      <div class="match-label">Match</div>
+    </div>
+  </div>
+
+  <div class="clinic-card">
+    <div class="clinic-rank">3</div>
+    <div class="clinic-info">
+      <div class="clinic-name">Dublin City Dental</div>
+      <div class="clinic-address">Dame Street, Dublin 2</div>
+      <div class="clinic-tags">
+        <span class="clinic-tag ct-open">Open until 8pm</span>
+        <span class="clinic-tag ct-anxiety">Anxiety-friendly</span>
+        <span class="clinic-tag ct-prsi">PRSI</span>
+      </div>
+      <div class="clinic-bottom">
+        <span class="clinic-distance">📍 2.4km away · Emergency extraction from €170</span>
+        <div class="clinic-actions">
+          <a href="#" class="btn-sm btn-sm-outline">View Passport</a>
+          <a href="#" class="btn-sm btn-sm-primary">Call Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="match-score">
+      <div class="match-number">85</div>
+      <div class="match-label">Match</div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <h2 class="how-title">How SmileAgent works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon how-icon-1">🦷</div>
+        <h3>Tell us what's wrong</h3>
+        <p>Answer 3 quick questions about your symptoms. SmileAgent assesses urgency and what kind of care you need.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon how-icon-2">🔍</div>
+        <h3>Get matched instantly</h3>
+        <p>We search verified Dublin clinics for availability, proximity, speciality match, and anxiety-friendly care.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon how-icon-3">✅</div>
+        <h3>Book with confidence</h3>
+        <p>See transparent pricing, dentist credentials, and estimated Med 2 tax relief before you call. No surprises.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    SmileAgent — Verified emergency dental care in Dublin. Free for patients, always.<br>
+    Built with real clinic data. Not a substitute for medical advice. If in doubt, call 999/112.
+  </div>
+
+</div>
+
+</body>
+</html>
